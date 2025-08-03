@@ -102,3 +102,15 @@ theme: next
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: ''
+
+# Local Search
+search:
+  path: search.xml
+  field: post
+  content: true
+  format: html
+
+# config of hexo-renderer-pandoc
+pandoc:
+  args:
+    - --mathjax
