@@ -16,7 +16,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # If your repository depends on submodule, please see: https://github.com/actions/checkout
           submodules: recursive
-      - name: Install pandoc
+      - name: Install Pandoc
         uses: pandoc/actions/setup@v1
       - name: Use Node.js 22
         uses: actions/setup-node@v4
