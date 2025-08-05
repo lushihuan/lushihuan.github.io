@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master # default branch
+  repository_dispatch:
+    types: [theme-push]
 
 jobs:
   build:
