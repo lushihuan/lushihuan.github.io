@@ -5,19 +5,19 @@ on:
     branches:
       - master # default branch
   repository_dispatch:
-    types: [theme-push]
+    types: [ theme-push ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Blog
+        uses: actions/checkout@v5
+      - name: Checkout theme
+        uses: actions/checkout@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          # If your repository depends on submodule, please see: https://github.com/actions/checkout
-          submodules: recursive
-      - name: Install Pandoc
-        uses: pandoc/actions/setup@v1
+          repository: lushihuan/hexo-theme-next
+          path: theme/next
       - name: Use Node.js 22
         uses: actions/setup-node@v4
         with:
