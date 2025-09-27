@@ -1,5 +1,5 @@
 ---
-title: Actions
+title: 一个仓库Github Actions触发另一个仓库的Github Actions
 date: 2025-09-01 21:38:03
 tags: Github
 ---
@@ -57,15 +57,15 @@ jobs:
 3. 权限范围可以只选被触发的博客仓库
 4. 权限要添加Content的Read and write权限
 
-![settings](Github嵌套仓库触发Action/settings.png)
+![settings](一个仓库Github%20Actions触发另一个仓库的Github%20Actions/settings.png)
 
-![token](Github嵌套仓库触发Action/token.png)
+![token](一个仓库Github%20Actions触发另一个仓库的Github%20Actions/token.png)
 
 ## 使用Repository Dispatch
 
 创建完Token把Token添加到主题仓库的Secrets and variables - Actions - Secrets里，然后给他起一个名字。
 
-![secret](Github嵌套仓库触发Action/secret.png)
+![secret](一个仓库Github%20Actions触发另一个仓库的Github%20Actions/secret.png)
 
 然后在博客仓库的Actions Workflows文件里添加Repository Dispatch触发的配置，这里需要配置一个Type。
 
