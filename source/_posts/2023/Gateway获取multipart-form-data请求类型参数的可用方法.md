@@ -6,7 +6,7 @@ tags: Java
 
 # 前言
 
-前阵子有个网关项目选型了Spring Cloud Gateway，由于需要进行API签名校验，项目组里又有很多老接口都是multipart/form-data请求类型的，所以就要咋子Spring Cloud Gateway中获取multipart/form-data请求类型的参数用于API签名。这其中走了不少坑，顺便给要做网关项目的人一个忠告......
+前阵子有个网关项目选型了Spring Cloud Gateway，由于需要进行API签名校验，项目组里又有很多老接口都是multipart/form-data请求类型的，所以就要在Spring Cloud Gateway中获取multipart/form-data请求类型的参数用于API签名。这其中走了不少坑，顺便给要做网关项目的人一个忠告......
 
 # 先看看有没有现成的方法可以调用
 
@@ -31,7 +31,7 @@ ServerWebExchange类里有这么一个方法：
 Mono<MultiValueMap<String, Part>> getMultipartData();
 ```
 
-这不是得来全不费工夫？没怎么简单，由于网关只是一个中间层，参数是要向下传递的，而请求的body只能被读取一次（这一点在注释中也有体现），因此如果使用了这个方法将导致body丢失导致报错。
+这不是得来全不费工夫？没这么简单，由于网关只是一个中间层，参数是要向下传递的，而请求的body只能被读取一次（这一点在注释中也有体现），因此如果使用了这个方法将导致body丢失导致报错。
 
 # 看看度娘有没有好方法
 
@@ -164,7 +164,7 @@ public class ReadRequestBodyFilter implements GatewayFilter {
 
 # 奇怪的线程挂起问题
 
-当你以为大功告成时，在一定条件下下（可能是body大小大于一定数值）压测时发现压测一段时间后压测线程的请求都会hand住处于类似死锁的假死状态。关闭压测线程重新启动又可以正常请求然后一段时间后又进入假死状态，排查了很久无果后，只在Spring WebFlux的Github Issue里看到可能的原因：[https://github.com/spring-projects/spring-framework/issues/28302](https://github.com/spring-projects/spring-framework/issues/28302) 。虽然我并没有开启问题里提到的stream mode，但是感觉八九不离十是这个DefaultPartHttpMessageReader的问题，这个Reader就是专门解析multipart/form-data请求类型的，而且是后期Spring为了完全响应式而替换了原本的非响应式Reader的（如果你使用的版本没有使用DefaultPartHttpMessageReader则无需往下看了）。因此参试替换会原本的Reader进行压测，故障排除。最终代码：
+当你以为大功告成时，在一定条件下下（可能是body大小大于一定数值）压测时发现压测一段时间后压测线程的请求都会hand住处于类似死锁的假死状态。关闭压测线程重新启动又可以正常请求然后一段时间后又进入假死状态，排查了很久无果后，只在Spring WebFlux的Github Issue里看到可能的原因：[https://github.com/spring-projects/spring-framework/issues/28302](https://github.com/spring-projects/spring-framework/issues/28302) 。虽然我并没有开启问题里提到的stream mode，但是感觉八九不离十是这个DefaultPartHttpMessageReader的问题，这个Reader就是专门解析multipart/form-data请求类型的，而且是后期Spring为了完全响应式而替换了原本的非响应式Reader的（如果你使用的版本没有使用DefaultPartHttpMessageReader则无需往下看了）。因此尝试替换回原本的Reader进行压测，故障排除。最终代码：
 
 由于DefaultPartHttpMessageReader替换了SynchronossPartHttpMessageReader，官方已经没有把依赖进行打包。需要添加以下依赖：
 
