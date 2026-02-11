@@ -5,7 +5,7 @@ on:
     branches:
       - master # default branch
   repository_dispatch:
-    types: [ theme-push ]
+    types: [ theme-push, web-design-course-design-push ]
 
 jobs:
   build:
@@ -13,11 +13,16 @@ jobs:
     steps:
       - name: Checkout Blog
         uses: actions/checkout@v6
-      - name: Checkout theme
+      - name: Checkout Theme
         uses: actions/checkout@v6
         with:
           repository: lushihuan/hexo-theme-next
           path: themes/next
+      - name: Checkout Web Design Course Design
+        uses: actions/checkout@v6
+        with:
+          repository: lushihuan/web-design-course-design
+          path: themes/next/source/网页设计课程设计
       - name: Use Node.js 22
         uses: actions/setup-node@v6
         with:
