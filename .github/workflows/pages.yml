@@ -12,25 +12,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Blog
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Checkout Theme
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: lushihuan/hexo-theme-next
           path: themes/next
       - name: Checkout Web Design Course Design
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: lushihuan/web-design-course-design
           path: themes/next/source/网页设计课程设计
       - name: Use Node.js 22
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           # Examples: 20, 18.19, >=16.20.2, lts/Iron, lts/Hydrogen, *, latest, current, node
           # Ref: https://github.com/actions/setup-node#supported-version-syntax
           node-version: "22"
       - name: Cache NPM dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: node_modules
           key: ${{ runner.OS }}-npm-cache
@@ -56,4 +56,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
